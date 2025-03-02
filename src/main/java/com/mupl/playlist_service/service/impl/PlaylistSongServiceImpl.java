@@ -29,26 +29,15 @@ public class PlaylistSongServiceImpl implements PlaylistSongService {
     public PlaylistSongResponse createPlaylistSong(long playlistId, PlaylistSongRequest playlistSongRequest) {
         //todo: need write call api external to music service to get song information (can use OpenFeign package).
         // From that, whenever we get songs in playlist we can get data from database (or cache) to avoid external call
+        boolean songExists = playlistSongRepository.existsById(playlistSongRequest.getSongId());
+        if (songExists) {
+            throw new BadRequestException("Song already exists in playlist");
+        }
         PlaylistEntity playlistEntity = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new BadRequestException("Playlist id not found"));
-
-        boolean songExists = playlistSongRepository.existsByPlaylistAndSongId(playlistEntity, playlistSongRequest.getSongId());
-        if (songExists) {
-            throw new BadRequestException("Song already exists in playlist.");
-        }
-
-        // Tạo entity mới
         PlaylistSongEntity playlistSongEntity = modelMapper.map(playlistSongRequest, PlaylistSongEntity.class);
         playlistSongEntity.setPlaylist(playlistEntity);
-
-        // Lưu entity
-        PlaylistSongEntity savedEntity = playlistSongRepository.save(playlistSongEntity);
-
-        // Trả về response
-        PlaylistSongResponse response = modelMapper.map(savedEntity, PlaylistSongResponse.class);
-        response.setPlaylistId(playlistEntity.getPlaylistId());
-
-        return response;
+        return modelMapper.map(playlistSongRepository.save(playlistSongEntity), PlaylistSongResponse.class);
     }
 
     @Override

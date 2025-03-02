@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "mupl_song")
 public class PlaylistSongEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long songId;
-    private String name;
-    private Integer artistId;
-    private String artistName;
+    private String songName;
+    private String artistNames;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id")
     private PlaylistEntity playlist;
