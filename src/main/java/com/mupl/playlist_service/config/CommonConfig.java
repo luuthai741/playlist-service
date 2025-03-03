@@ -1,5 +1,7 @@
 package com.mupl.playlist_service.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.codec.ErrorDecoder;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,5 +11,9 @@ public class CommonConfig {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+    @Bean
+    public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
+        return new CustomErrorDecoder(objectMapper);
     }
 }
