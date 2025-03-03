@@ -13,3 +13,6 @@ spring:
 
 server:
   port: 12000
+
+services:
+  music-service: ${MUSIC_SERVICE:localhost:11000}

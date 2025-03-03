@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface PlaylistSongService {
     PlaylistSongResponse createPlaylistSong(long playlistId, PlaylistSongRequest playlistSongRequest);
-
     PlaylistSongResponse deletePlaylistSong(long playlistSongId);
-
     List<PlaylistSongResponse> getAllPlaylistSongsByPlaylistId(long playlistId);
+    void deleteAllPlaylistSongsBySongId(long songId);
 }
