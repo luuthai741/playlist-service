@@ -10,9 +10,21 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-
+  kafka:
+    bootstrap-servers: 192.168.1.10:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+    properties:
+      compression.type: lz4
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      enable-auto-commit: true
 server:
   port: 12000
-
+logging:
+  level:
+    org.springframework.kafka: DEBUG
 services:
   music-service: ${MUSIC_SERVICE:localhost:11000}
